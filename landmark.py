@@ -1,8 +1,4 @@
-"""
-Created on Tue Mar  5 17:58:23 2019
-
-@author: kartikey
-"""
+#Landmark Recognition
 
 import numpy as np
 import pandas as pd
@@ -38,7 +34,6 @@ for i in range(1):
 	cv2.imshow('image',newimg)
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
-	#print(newimg)
 	newimg = np.float32(newimg) / 255.0 
 	gx = cv2.Sobel(newimg, cv2.CV_32F, 1, 0, ksize=1)
 	gy = cv2.Sobel(newimg, cv2.CV_32F, 0, 1, ksize=1)
@@ -51,5 +46,7 @@ for i in range(1):
 	for k in range(0,14):
 		for j in range(0,5):
 			bin_hist[k][j]=conv(mag,angle,j,i)
+            
+            #fg
 	
 
