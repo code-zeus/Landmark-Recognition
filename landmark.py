@@ -11,7 +11,7 @@ import pandas as pd
 import urllib.request as ur
 import cv2
 
-def conv(mag,angle,a,b) :
+def conv(mag,angle,b,a) :
 	mat=np.zeros([9])
 	for i in range(17*a,17*a+16):
 		for j in range(17*b,17*b+16):
@@ -21,7 +21,7 @@ def conv(mag,angle,a,b) :
 				z=angle[i][j]/20
 				y=int(z)
 				print(type(mag[i][j]))
-				mat[y]+=mag[i][j]*[((20-x)/20)]
+				mat[y]+=mag[i][j]*((20-x)/20)
 				if(x>8):
 					mat[0]+=mag[i][j]-mat[y-1]
 				else:
@@ -44,10 +44,12 @@ for i in range(89):
 	gx = cv2.Sobel(newimg, cv2.CV_32F, 1, 0, ksize=1)
 	gy = cv2.Sobel(newimg, cv2.CV_32F, 0, 1, ksize=1)
 	mag, angle = cv2.cartToPolar(gx, gy, angleInDegrees=True)
-	bin_hist=np.zeros([90,9])
+	bin_hist=np.zeros([91,10])
+	temp=0
 	for i in range(0,14):
 		for j in range(0,5):
-			bin_hist[i+j]=conv(mag,angle,j,i)
+			bin_hist[temp]=conv(mag,angle,j,i)
+			temp+=1
 	cv2.imshow('image',angle)
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
