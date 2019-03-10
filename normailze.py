@@ -16,8 +16,4 @@ def normalize(temp):
         temp[i]=temp[i]/sum
     return temp
 
-for i in range(0,4):
-    for j in range(0,13):
-            temp=np.concatenate((bin_hist[i][j],bin_hist[i+1][j],bin_hist[i][j+1],bin_hist[i+1][j+1]))
-            hog_descriptor=np.concatenate((hog_descriptor,normalize(temp)))
                 
