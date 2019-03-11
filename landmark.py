@@ -5,6 +5,8 @@ from normailze import normalize
 import pandas as pd
 import urllib.request as ur
 import cv2
+from sklearn import svm
+import image-retreival
 
 def conv(mag,angle,b,a) :
 	mat=np.zeros(9)
@@ -27,9 +29,11 @@ def conv(mag,angle,b,a) :
 
 df=pd.read_csv(r"C:\Users\pushkarpathak\Desktop\Landmark-Recognition\landmarks.csv")
 df1=df["URL"]
-for i in range(2):
+for i in range(88):
 	file_name='image.jpg'
-	ur.urlretrieve(df1[0],file_name)
+    url = df1[i]
+    r = requests.get(url, allow_redirects=True)
+    open(file_name, 'wb').write(r.content)
 	img = cv2.imread(file_name,0)
 	newimg= cv2.resize(img,(102,255))
 	cv2.imshow('image',newimg)
@@ -51,6 +55,22 @@ for i in range(0,14):
     for j in range(0,5):
         temp=np.concatenate((bin_hist[i][j],bin_hist[i+1][j],bin_hist[i][j+1],bin_hist[i+1][j+1]))
         hog_descriptor=np.concatenate((hog_descriptor,normalize(temp)))          
-for i in range(hog_descriptor.size-1):
-    print(hog_descriptor[i])
+
+
+labels =  np.array(df['labels']).reshape(len(df['labels']),1)  
+clf = svm.SVC()
+hog_features = np.array(hog_descriptor)
+data_frame = np.hstack((hog_features,labels))
+np.random.shuffle(data_frame)
+
+
+percentage = 80
+partition = int(len(hog_features)*percentage/100)
+
+x_train, x_test = data_frame[:partition,:-1],  data_frame[partition:,:-1]
+y_train, y_test = data_frame[:partition,-1:].ravel() , data_frame[partition:,-1:].ravel()
+
+clf.fit(x_train,y_train)
+
+y_pred = clf.predict(x_test)
 
