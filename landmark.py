@@ -27,12 +27,19 @@ def conv(mag,angle,b,a) :
 	return mat
               
 
+<<<<<<< HEAD
 df=pd.read_csv(r"/home/kartikey/Desktop/Landmark/landmarks.csv")
 df1=df["URL"]
 df2=df["labels"]
 print(type(df2[0]))
 hog_features = []
 for i in range(38,43):
+=======
+df=pd.read_csv(r"C:\Users\Aditya\Desktop\Landmark-Recognition\landmarks.csv")
+df1=df["URL"]
+hog_features = []
+for i in range(0,81):
+>>>>>>> d679c9cdfc79a73a0c4903ea81d5edfb6dcf64c9
 	file_name='image.jpg'
 	url = df1[i]
 	r = requests.get(url, allow_redirects=True)
@@ -42,7 +49,10 @@ for i in range(38,43):
 		newimg= cv2.resize(img,(102,255))
 	except Exception as e:
 		print(str(e))
+<<<<<<< HEAD
 		df2=df2.drop(df[i],axis=0,inplace=True)
+=======
+>>>>>>> d679c9cdfc79a73a0c4903ea81d5edfb6dcf64c9
 		continue
 	#cv2.imshow('image',newimg)
 	#cv2.waitKey(0)
@@ -52,6 +62,8 @@ for i in range(38,43):
 	gx = cv2.Sobel(newimg, cv2.CV_32F, 1, 0, ksize=1)
 	gy = cv2.Sobel(newimg, cv2.CV_32F, 0, 1, ksize=1)
 	mag, angle = cv2.cartToPolar(gx, gy, angleInDegrees=True)
+	if(i==15):
+		print(len(angle),len(angle[0]))
 	bin_hist=np.zeros((15,6,9))
 	for k in range(0,15):
 		for j in range(0,6):
@@ -66,7 +78,11 @@ for i in range(38,43):
 	hog_features.append(hog_descriptor)
 
 
+<<<<<<< HEAD
 labels =  np.array(df2).reshape(len(df2),1) 
+=======
+labels =  np.array(df['labels']).reshape(len(df['labels']),1) 
+>>>>>>> d679c9cdfc79a73a0c4903ea81d5edfb6dcf64c9
 clf = svm.SVC()
 hog_features = np.array(hog_features)
 print(len(hog_features), len(hog_features[0]))
